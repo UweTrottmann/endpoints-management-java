@@ -1,5 +1,6 @@
 /*
  * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2023 Uwe Trottmann
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,19 +41,8 @@ public class CheckAggregationOptionsTest {
   public void defaultConstructorShouldSpecifyTheDefaultValues() {
     CheckAggregationOptions options = new CheckAggregationOptions();
     assertEquals(CheckAggregationOptions.DEFAULT_NUM_ENTRIES, options.getNumEntries());
-    assertEquals(CheckAggregationOptions.DEFAULT_FLUSH_CACHE_ENTRY_INTERVAL_MILLIS,
-        options.getFlushCacheEntryIntervalMillis());
     assertEquals(CheckAggregationOptions.DEFAULT_RESPONSE_EXPIRATION_MILLIS,
         options.getExpirationMillis());
-  }
-
-  @Test
-  public void constructorShouldIgnoreLowExpirationMillis() {
-    CheckAggregationOptions options =
-        new CheckAggregationOptions(-1, 1, 0 /* this is low and will be ignored */);
-    assertEquals(-1, options.getNumEntries());
-    assertEquals(1, options.getFlushCacheEntryIntervalMillis());
-    assertEquals(2 /* cache interval + 1 */, options.getExpirationMillis());
   }
 
   @Test
@@ -70,7 +60,7 @@ public class CheckAggregationOptionsTest {
   public void shouldFailToCreateACacheWithANullTicker() {
     try {
       CheckAggregationOptions options = new CheckAggregationOptions();
-      options.createCache(testDeque(), null);
+      options.createCache(null);
       fail("should have raised NullPointerException");
     } catch (NullPointerException e) {
       // expected
@@ -81,12 +71,11 @@ public class CheckAggregationOptionsTest {
   public void shouldNotCreateACacheUnlessMaxSizeIsPositive() {
     for (int i : new int[] {-1, 0, 1}) {
       CheckAggregationOptions options = new CheckAggregationOptions(i,
-          CheckAggregationOptions.DEFAULT_FLUSH_CACHE_ENTRY_INTERVAL_MILLIS,
-          CheckAggregationOptions.DEFAULT_RESPONSE_EXPIRATION_MILLIS);
+              CheckAggregationOptions.DEFAULT_RESPONSE_EXPIRATION_MILLIS);
       if (i > 0) {
-        assertNotNull(options.createCache(testDeque()));
+        assertNotNull(options.createCache());
       } else {
-        assertNull(options.createCache(testDeque()));
+        assertNull(options.createCache());
       }
     }
   }
@@ -95,45 +84,23 @@ public class CheckAggregationOptionsTest {
   public void shouldCreateACacheEvenIfExpirationIsNotPositive() {
     for (int i : new int[] {-1, 0, 1}) {
       CheckAggregationOptions options =
-          new CheckAggregationOptions(CheckAggregationOptions.DEFAULT_NUM_ENTRIES, i - 1, i);
-      assertNotNull(options.createCache(testDeque()));
+          new CheckAggregationOptions(CheckAggregationOptions.DEFAULT_NUM_ENTRIES, i);
+      assertNotNull(options.createCache());
     }
   }
 
   @Test
-  public void shouldCreateACacheThatFlushesToTheOutputDeque() {
-    CheckAggregationOptions options = new CheckAggregationOptions(1,
-        CheckAggregationOptions.DEFAULT_FLUSH_CACHE_ENTRY_INTERVAL_MILLIS,
-        CheckAggregationOptions.DEFAULT_RESPONSE_EXPIRATION_MILLIS);
-
-    ConcurrentLinkedDeque<Long> deque = testDeque();
-    Cache<String, Long> cache = options.createCache(deque);
-    cache.put("one", 1L);
-    assertEquals(cache.size(), 1);
-    assertEquals(deque.size(), 0);
-    cache.put("two", 2L);
-    assertEquals(cache.size(), 1);
-    assertEquals(deque.size(), 1);
-    cache.put("three", 3L);
-    assertEquals(cache.size(), 1);
-    assertEquals(deque.size(), 2);
-  }
-
-  @Test
-  public void shouldCreateACacheThatFlushesToTheOutputDequeAfterExpiration() {
+  public void shouldCreateACacheThatDeletesEntryAfterExpiration() {
     CheckAggregationOptions options =
-        new CheckAggregationOptions(CheckAggregationOptions.DEFAULT_NUM_ENTRIES, 0, 1);
+        new CheckAggregationOptions(CheckAggregationOptions.DEFAULT_NUM_ENTRIES, 1);
 
-    ConcurrentLinkedDeque<Long> deque = testDeque();
     FakeTicker ticker = new FakeTicker();
-    Cache<String, Long> cache = options.createCache(deque, ticker);
+    Cache<String, Long> cache = options.createCache(ticker);
     cache.put("one", 1L);
     assertEquals(1, cache.size());
-    assertEquals(0, deque.size());
     ticker.tick(1 /* expires the entry */, TimeUnit.MILLISECONDS);
     cache.cleanUp();
     assertEquals(0, cache.size());
-    assertEquals(1, deque.size());
   }
 
   private static ConcurrentLinkedDeque<Long> testDeque() {
