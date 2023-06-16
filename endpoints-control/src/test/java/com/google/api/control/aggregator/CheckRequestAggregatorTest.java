@@ -1,5 +1,6 @@
 /*
  * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2023 Uwe Trottmann
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +54,7 @@ public class CheckRequestAggregatorTest {
   private static final int TEST_EXPIRATION = TEST_FLUSH_INTERVAL + 1;
   private static final Timestamp EARLY = Timestamp.newBuilder().setNanos(1).setSeconds(100).build();
   private CheckRequestAggregator NO_CACHE = new CheckRequestAggregator(NO_CACHE_NAME,
-      new CheckAggregationOptions(-1 /* disables cache */, 2, 1));
+      new CheckAggregationOptions(-1 /* disables cache */, 1));
   private CheckRequestAggregator DEFAULT =
       new CheckRequestAggregator(DEFAULT_NAME, new CheckAggregationOptions());
   private FakeTicker ticker;
@@ -103,19 +104,13 @@ public class CheckRequestAggregatorTest {
   }
 
   @Test
-  public void whenNonCachingShouldHaveEmptyFlush() {
-    assertEquals(0, NO_CACHE.flush().length);
-  }
-
-  @Test
   public void whenNonCachingShouldHaveWellKnownFlushInterval() {
-    assertEquals(CheckRequestAggregator.NON_CACHING, NO_CACHE.getFlushIntervalMillis());
+    assertEquals(CheckRequestAggregator.NON_CACHING, NO_CACHE.getExpirationMillis());
   }
 
   @Test
   public void whenNonCachingShouldNotCacheResponse() {
     CheckRequest req = newTestRequest("service.no_cache");
-    assertEquals(0, NO_CACHE.flush().length);
     assertEquals(null, NO_CACHE.check(req));
     CheckResponse fakeResponse =
         fakeResponse();
@@ -152,9 +147,9 @@ public class CheckRequestAggregatorTest {
   }
 
   @Test
-  public void whenCachingShouldHaveExpirationAsFlushInterval() {
+  public void whenCachingShouldHaveExpiration() {
     CheckRequestAggregator agg = newCachingInstance();
-    assertEquals(TEST_EXPIRATION, agg.getFlushIntervalMillis());
+    assertEquals(TEST_EXPIRATION, agg.getExpirationMillis());
   }
 
   @Test
@@ -255,7 +250,23 @@ public class CheckRequestAggregatorTest {
     assertEquals(fakeResponse, agg.check(req)); // not expired yet
   }
 
-  public void shouldNotFlushRequestThatHaveNotBeenUpdated() {
+  @Test
+  public void shouldExpireRequestThatHasNotBeenUpdated() {
+    CheckRequest req = newTestRequest(CACHING_NAME);
+    CheckRequestAggregator agg = newCachingInstance();
+    CheckResponse fakeResponse = fakeResponse();
+    assertEquals(null, agg.check(req));
+    agg.addResponse(req, fakeResponse);
+    assertEquals(fakeResponse, agg.check(req));
+    ticker.tick(TEST_EXPIRATION, TimeUnit.MILLISECONDS);
+
+    // now expired, confirm nothing in the cache
+    assertEquals(null, agg.check(req));
+    assertEquals(null, agg.check(req));
+  }
+
+  @Test
+  public void shouldNotExpireRequestThatHasBeenUpdated() {
     CheckRequest req = newTestRequest(CACHING_NAME);
     CheckRequestAggregator agg = newCachingInstance();
     CheckResponse fakeResponse = fakeResponse();
@@ -264,37 +275,19 @@ public class CheckRequestAggregatorTest {
     assertEquals(fakeResponse, agg.check(req));
     ticker.tick(1, TimeUnit.MILLISECONDS);
 
-    // now past the flush interval, nothing to expire
-    assertEquals(0, agg.flush().length);
-
-    // now expired, confirm nothing in the cache, and nothing flushed
-    ticker.tick(1, TimeUnit.MILLISECONDS);
-    assertEquals(null, agg.check(req));
-    assertEquals(null, agg.check(req));
-    assertEquals(0, agg.flush().length);
-  }
-
-  public void shouldFlushRequestsThatHaveBeenUpdated() {
-    CheckRequest req = newTestRequest(CACHING_NAME);
-    CheckRequestAggregator agg = newCachingInstance();
-    CheckResponse fakeResponse = fakeResponse();
-    assertEquals(null, agg.check(req));
+    // update request
     agg.addResponse(req, fakeResponse);
+
+    // would be expired if not updated
+    ticker.tick(1, TimeUnit.MILLISECONDS);
     assertEquals(fakeResponse, agg.check(req));
-    ticker.tick(1, TimeUnit.MILLISECONDS);
 
-    // now past the flush interval, nothing to expire
-    assertEquals(0, agg.flush().length);
-
-    // now expired, flush without checking the cache gives
-    // the cached request
-    ticker.tick(1, TimeUnit.MILLISECONDS);
-    assertEquals(1, agg.flush().length);
-
-    // flushing again immediately should result in 0 entries
-    assertEquals(0, agg.flush().length);
+    // now expired, confirm nothing in the cache
+    ticker.tick(TEST_EXPIRATION, TimeUnit.MILLISECONDS);
+    assertEquals(null, agg.check(req));
   }
 
+  @Test
   public void shouldClearRequests() {
     CheckRequest req = newTestRequest(CACHING_NAME);
     CheckRequestAggregator agg = newCachingInstance();
@@ -304,12 +297,11 @@ public class CheckRequestAggregatorTest {
     assertEquals(fakeResponse, agg.check(req));
     agg.clear();
     assertEquals(null, agg.check(req));
-    assertEquals(0, agg.flush().length);
   }
 
   private CheckRequestAggregator newCachingInstance() {
     return new CheckRequestAggregator(CACHING_NAME,
-        new CheckAggregationOptions(1, TEST_FLUSH_INTERVAL, TEST_EXPIRATION), null, ticker);
+        new CheckAggregationOptions(1, TEST_EXPIRATION), ticker);
   }
 
   private static CheckResponse fakeResponse() {
