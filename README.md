@@ -1,5 +1,4 @@
-![Travis CI Status](https://travis-ci.org/cloudendpoints/endpoints-management-java.svg?branch=master)
-![codecov.io](http://codecov.io/github/cloudendpoints/endpoints-management-java/coverage.svg?branch=master)
+**❗️ This is an unofficial fork fixing various issues. Many documentation files are not updated to reflect this, yet. ❗**
 
 Google Endpoints API Management
 ===============================
