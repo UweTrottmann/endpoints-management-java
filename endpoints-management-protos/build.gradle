@@ -21,10 +21,10 @@ repositories {
 }
 
 dependencies {
-  compile platform(libraries.protobufJavaBom),
+  implementation platform(libraries.protobufJavaBom),
           libraries.protobufJava
 
-  compile platform(libraries.grpcBom),
+  implementation platform(libraries.grpcBom),
           libraries.grpcStub,
           libraries.grpcProtobuf
 }
