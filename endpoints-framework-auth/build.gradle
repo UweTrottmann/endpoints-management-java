@@ -23,12 +23,12 @@ archivesBaseName = "endpoints-framework-auth"
 
 dependencies {
   compileOnly group: "com.google.endpoints", name: "endpoints-framework", version: "${endpointsFrameworkVersion}"
-  compile project(":endpoints-auth")
+  implementation project(":endpoints-auth")
 
-  testCompile group: "junit", name: "junit", version: "${junitVersion}"
-  testCompile group: "org.mockito", name: "mockito-core", version: "${mockitoVersion}"
-  testCompile group: "org.springframework", name: "spring-test", version: "${springTestVersion}"
-  testCompile group: "com.google.endpoints", name: "endpoints-framework", version: "${endpointsFrameworkVersion}"
-  compile "com.google.flogger:flogger:${floggerVersion}"
-  runtime "com.google.flogger:flogger-system-backend:${floggerVersion}"
+  testImplementation group: "junit", name: "junit", version: "${junitVersion}"
+  testImplementation group: "org.mockito", name: "mockito-core", version: "${mockitoVersion}"
+  testImplementation group: "org.springframework", name: "spring-test", version: "${springTestVersion}"
+  testImplementation group: "com.google.endpoints", name: "endpoints-framework", version: "${endpointsFrameworkVersion}"
+  implementation "com.google.flogger:flogger:${floggerVersion}"
+  runtimeOnly "com.google.flogger:flogger-system-backend:${floggerVersion}"
 }

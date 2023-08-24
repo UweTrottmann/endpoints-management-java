@@ -29,13 +29,13 @@ configureMaven(
 )
 
 dependencies {
-  compile("com.google.api-client:google-api-client-protobuf:${googleApiClientProtobufVersion}") {
+  implementation("com.google.api-client:google-api-client-protobuf:${googleApiClientProtobufVersion}") {
     exclude group: 'com.google.guava', module: 'guava-jdk5'
   }
-  compile module(group: 'com.google.api-client', name: 'google-api-client', version: '1.22.0') {
+  implementation module(group: 'com.google.api-client', name: 'google-api-client', version: '1.22.0') {
     dependency('com.google.http-client:google-http-client:1.22.0')
     dependency('com.google.oauth-client:google-oauth-client:1.22.0')
     exclude group: 'com.google.guava', module: 'guava-jdk5'
   }
-  compile project(":endpoints-management-protos")
+  implementation project(":endpoints-management-protos")
 }

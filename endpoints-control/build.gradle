@@ -48,28 +48,28 @@ processResources {
 }
 
 dependencies {
-  compile "com.google.auto.value:auto-value-annotations:${autoValueVersion}"
+  implementation "com.google.auto.value:auto-value-annotations:${autoValueVersion}"
   annotationProcessor "com.google.auto.value:auto-value:${autoValueVersion}"
-  compile "com.google.code.findbugs:jsr305:${jsr305Version}"
-  compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
-  compile "com.google.flogger:flogger:${floggerVersion}"
-  runtime "com.google.flogger:flogger-system-backend:${floggerVersion}"
-  compile "com.google.guava:guava:${guavaVersion}"
-  compile("com.google.http-client:google-http-client-jackson2:${httpClientVersion}") {
+  implementation "com.google.code.findbugs:jsr305:${jsr305Version}"
+  implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+  implementation "com.google.flogger:flogger:${floggerVersion}"
+  runtimeOnly "com.google.flogger:flogger-system-backend:${floggerVersion}"
+  implementation "com.google.guava:guava:${guavaVersion}"
+  implementation("com.google.http-client:google-http-client-jackson2:${httpClientVersion}") {
     exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
     exclude group: 'com.google.guava', module: 'guava-jdk5'
   }
-  compile "javax.servlet:servlet-api:${servletApiVersion}"
-  compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
-  compile(group: 'com.google.api-client', name: 'google-api-client-appengine', version: "${googleApiClientAppEngineVersion}") {
+  implementation "javax.servlet:servlet-api:${servletApiVersion}"
+  implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+  implementation(group: 'com.google.api-client', name: 'google-api-client-appengine', version: "${googleApiClientAppEngineVersion}") {
     exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
     exclude group: 'com.google.guava', module: 'guava-jdk5'
   }
-  compile project(":endpoints-control-api-client")
-  compile project(":endpoints-service-config")
-  compile project(":endpoints-management-protos")
+  implementation project(":endpoints-control-api-client")
+  implementation project(":endpoints-service-config")
+  implementation project(":endpoints-management-protos")
 
-  testCompile "junit:junit:${junitVersion}"
-  testCompile "com.google.truth:truth:${truthVersion}"
-  testCompile "org.mockito:mockito-core:${mockitoVersion}"
+  testImplementation "junit:junit:${junitVersion}"
+  testImplementation "com.google.truth:truth:${truthVersion}"
+  testImplementation "org.mockito:mockito-core:${mockitoVersion}"
 }

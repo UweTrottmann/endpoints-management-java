@@ -27,29 +27,29 @@ configurations {
 }
 
 dependencies {
-  compile project(":endpoints-service-config")
-  compile(project(":endpoints-control")) {
+  implementation project(":endpoints-service-config")
+  implementation(project(":endpoints-control")) {
     transitive = false
   }
 
-  compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
-  compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-  compile "com.google.guava:guava:${guavaVersion}"
-  compile "com.google.flogger:flogger:${floggerVersion}"
-  runtime "com.google.flogger:flogger-system-backend:${floggerVersion}"
-  compile "com.google.http-client:google-http-client:${httpClientVersion}"
-  compile "javax.servlet:servlet-api:${servletApiVersion}"
-  compile "org.bitbucket.b_c:jose4j:${jose4jVersion}"
+  implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+  implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+  implementation "com.google.guava:guava:${guavaVersion}"
+  implementation "com.google.flogger:flogger:${floggerVersion}"
+  runtimeOnly "com.google.flogger:flogger-system-backend:${floggerVersion}"
+  implementation "com.google.http-client:google-http-client:${httpClientVersion}"
+  implementation "javax.servlet:servlet-api:${servletApiVersion}"
+  implementation "org.bitbucket.b_c:jose4j:${jose4jVersion}"
 
-  testCompile "junit:junit:${junitVersion}"
-  testCompile "org.bouncycastle:bcmail-jdk15on:${bouncycastleVersion}"
-  testCompile "org.mockito:mockito-core:${mockitoVersion}"
+  testImplementation "junit:junit:${junitVersion}"
+  testImplementation "org.bouncycastle:bcmail-jdk15on:${bouncycastleVersion}"
+  testImplementation "org.mockito:mockito-core:${mockitoVersion}"
 
-  testCompile "org.apache.commons:commons-lang3:${commonsLang3Version}"
-  testCompile "org.eclipse.jetty:jetty-server:${jettyVersion}"
-  testCompile "org.eclipse.jetty:jetty-servlet:${jettyVersion}"
-  testCompile "org.glassfish.jersey.core:jersey-server:${jerseyVersion}"
-  testCompile "org.glassfish.jersey.containers:jersey-container-servlet-core:${jerseyVersion}"
+  testImplementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
+  testImplementation "org.eclipse.jetty:jetty-server:${jettyVersion}"
+  testImplementation "org.eclipse.jetty:jetty-servlet:${jettyVersion}"
+  testImplementation "org.glassfish.jersey.core:jersey-server:${jerseyVersion}"
+  testImplementation "org.glassfish.jersey.containers:jersey-container-servlet-core:${jerseyVersion}"
 }
 
 sourceSets {

@@ -22,16 +22,16 @@ configureMaven(
 archivesBaseName = 'endpoints-management-config'
 
 dependencies {
-  compile(project(":endpoints-management-protos"))
-  compile platform(libraries.protobufJavaBom)
-  compile "com.google.protobuf:protobuf-java"
-  compile "com.google.apis:google-api-services-servicemanagement:$servicemanagementVersion"
+  implementation(project(":endpoints-management-protos"))
+  implementation platform(libraries.protobufJavaBom)
+  implementation "com.google.protobuf:protobuf-java"
+  implementation "com.google.apis:google-api-services-servicemanagement:$servicemanagementVersion"
   compileOnly "com.google.appengine:appengine-api-1.0-sdk:$appengineSdkVersion"
-  compile "com.google.guava:guava:$guavaVersion"
-  compile "com.google.http-client:google-http-client:$httpClientVersion"
-  compile "com.google.protobuf:protobuf-java-util"
+  implementation "com.google.guava:guava:$guavaVersion"
+  implementation "com.google.http-client:google-http-client:$httpClientVersion"
+  implementation "com.google.protobuf:protobuf-java-util"
 
-  testCompile "org.mockito:mockito-core:$mockitoVersion"
-  testCompile "junit:junit:$junitVersion"
-  testCompile "com.google.truth:truth:$truthVersion"
+  testImplementation "org.mockito:mockito-core:$mockitoVersion"
+  testImplementation "junit:junit:$junitVersion"
+  testImplementation "com.google.truth:truth:$truthVersion"
 }
