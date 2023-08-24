@@ -51,12 +51,6 @@ allprojects {
       }
     }
   }
-
-  jar {
-    manifest {
-      attributes("Implementation-Version": version)
-    }
-  }
 }
 
 subprojects {
