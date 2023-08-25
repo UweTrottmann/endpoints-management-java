@@ -12,8 +12,6 @@ apply plugin: 'com.google.protobuf'
 
 description = 'GRPC library for the servicecontrol-v1 service'
 // TODO: use a flag to determine whether to produce a release or a snapshot
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
   mavenCentral()
