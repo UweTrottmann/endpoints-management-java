@@ -21,12 +21,25 @@ buildscript {
   dependencies { classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10' }
 }
 
-configureMaven(
-  project,
-  'Endpoints API Management',
-  'Provide access control for managed services'
-)
-archivesBaseName = 'endpoints-management-control'
+plugins {
+    id("ut-publish")
+}
+
+version = "1.0.15-SNAPSHOT"
+
+// Set project-specific publishing properties
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifactId = "endpoints-management-control"
+      from components.java
+      pom {
+        name.set("Endpoints API Management")
+        description.set("Provide access control for managed services")
+      }
+    }
+  }
+}
 
 test {
   testLogging {

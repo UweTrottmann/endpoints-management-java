@@ -14,19 +14,25 @@
  * limitations under the License.
  */
 
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-  dependencies { classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10' }
+plugins {
+  id("ut-publish")
 }
-archivesBaseName = 'endpoints-management-api-client'
 
-configureMaven(
-  project,
-  'Endpoints Management - API service client',
-  'Contains the generated http client for the service control service'
-)
+version = "1.0.15-SNAPSHOT"
+
+// Set project-specific publishing properties
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifactId = "endpoints-management-api-client"
+      from components.java
+      pom {
+        name.set("Endpoints Management - API service client")
+        description.set("Contains the generated http client for the service control service")
+      }
+    }
+  }
+}
 
 dependencies {
   implementation("com.google.api-client:google-api-client-protobuf:${googleApiClientProtobufVersion}") {

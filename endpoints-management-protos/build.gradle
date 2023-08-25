@@ -5,13 +5,27 @@ buildscript {
   dependencies { classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10' }
 }
 
-apply plugin: 'java-library'
-apply plugin: 'maven'
-apply plugin: 'signing'
+plugins {
+  id("ut-publish")
+}
+
 apply plugin: 'com.google.protobuf'
 
-description = 'GRPC library for the servicecontrol-v1 service'
-// TODO: use a flag to determine whether to produce a release or a snapshot
+version = "1.0.15-SNAPSHOT"
+
+// Set project-specific publishing properties
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifactId = "endpoints-management-protos"
+      from components.java
+      pom {
+        name.set("Endpoints Management - Generated Java Protobufs")
+        description.set("Contains the generated protocol buffer surface used by Endpoints")
+      }
+    }
+  }
+}
 
 repositories {
   mavenCentral()
@@ -61,10 +75,3 @@ sourceSets {
 sourceSets.main.proto.setIncludes([
   'google/api/servicecontrol/v1/*.proto',
   'google/api/experimental/*.proto'])
-
-configureMaven(
-  project,
-  'Endpoints Management - Generated Java Protobufs',
-  'Contains the generated protocol buffer surface used by Endpoints'
-)
-archivesBaseName = 'endpoints-management-protos'

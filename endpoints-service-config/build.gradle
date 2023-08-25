@@ -14,12 +14,25 @@
  * limitations under the License.
  */
 
-configureMaven(
-  project,
-  'Endpoints API Management - Service Configuration',
-  'Handles service configuration via the service management API'
-)
-archivesBaseName = 'endpoints-management-config'
+plugins {
+  id("ut-publish")
+}
+
+version = "1.0.15-SNAPSHOT"
+
+// Set project-specific publishing properties
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifactId = "endpoints-management-config"
+      from components.java
+      pom {
+        name.set("Endpoints API Management - Service Configuration")
+        description.set("Handles service configuration via the service management API")
+      }
+    }
+  }
+}
 
 dependencies {
   api(project(":endpoints-management-protos"))
