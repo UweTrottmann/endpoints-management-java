@@ -5,7 +5,7 @@ buildscript {
   dependencies { classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10' }
 }
 
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'com.google.protobuf'
@@ -19,12 +19,12 @@ repositories {
 }
 
 dependencies {
-  implementation platform(libraries.protobufJavaBom),
-          libraries.protobufJava
+  api platform(libraries.protobufJavaBom)
+  api libraries.protobufJava
 
-  implementation platform(libraries.grpcBom),
-          libraries.grpcStub,
-          libraries.grpcProtobuf
+  api platform(libraries.grpcBom)
+  api libraries.grpcStub
+  api libraries.grpcProtobuf
 }
 
 protobuf {
