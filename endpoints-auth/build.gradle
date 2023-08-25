@@ -22,24 +22,24 @@ configureMaven(
 archivesBaseName = 'endpoints-management-auth'
 
 configurations {
-  integrationTestCompile.extendsFrom testCompile
-  integrationTestRuntime.extendsFrom testRuntime
+  integrationTestCompile.extendsFrom testImplementation
+  integrationTestRuntime.extendsFrom testRuntimeOnly
 }
 
 dependencies {
   implementation project(":endpoints-service-config")
-  implementation(project(":endpoints-control")) {
-    transitive = false
+  api(project(":endpoints-control")) {
+    transitive = false // Just importing a model file (MethodRegistry.AuthInfo), do not pull in all dependencies.
   }
 
   implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
   implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-  implementation "com.google.guava:guava:${guavaVersion}"
+  api "com.google.guava:guava:${guavaVersion}"
   implementation "com.google.flogger:flogger:${floggerVersion}"
   runtimeOnly "com.google.flogger:flogger-system-backend:${floggerVersion}"
-  implementation "com.google.http-client:google-http-client:${httpClientVersion}"
-  implementation "javax.servlet:servlet-api:${servletApiVersion}"
-  implementation "org.bitbucket.b_c:jose4j:${jose4jVersion}"
+  api "com.google.http-client:google-http-client:${httpClientVersion}"
+  api "javax.servlet:servlet-api:${servletApiVersion}"
+  api "org.bitbucket.b_c:jose4j:${jose4jVersion}"
 
   testImplementation "junit:junit:${junitVersion}"
   testImplementation "org.bouncycastle:bcmail-jdk15on:${bouncycastleVersion}"

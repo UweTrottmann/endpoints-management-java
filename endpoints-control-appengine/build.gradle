@@ -22,11 +22,11 @@ configureMaven(
 archivesBaseName = 'endpoints-management-control-appengine'
 
 dependencies {
+  api project(":endpoints-control")
   implementation "com.google.appengine:appengine-api-1.0-sdk:$appengineSdkVersion"
-  implementation "com.google.code.findbugs:jsr305:${jsr305Version}"
-  implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
   implementation "com.google.guava:guava:${guavaVersion}"
-  implementation("com.google.http-client:google-http-client-jackson2:${httpClientVersion}") {
+  implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+  implementation("com.google.http-client:google-http-client:${httpClientVersion}") {
     exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
     exclude group: 'com.google.guava', module: 'guava-jdk5'
   }
@@ -34,5 +34,4 @@ dependencies {
     exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
     exclude group: 'com.google.guava', module: 'guava-jdk5'
   }
-  implementation project(":endpoints-control")
 }

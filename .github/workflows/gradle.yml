@@ -27,4 +27,5 @@ jobs:
         uses: gradle/gradle-build-action@243af859f8ca30903d9d7f7936897ca0358ba691 # v2.7.1
 
       - name: Execute Gradle build
-        run: ./gradlew build -x :endpoints-management-control-appengine-all:build -x :endpoints-management-control-all:build
+        # run: ./gradlew build -x :endpoints-management-control-appengine-all:build -x :endpoints-management-control-all:build
+        run: ./gradlew build

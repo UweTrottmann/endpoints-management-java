@@ -22,12 +22,10 @@ configureMaven(
 archivesBaseName = 'endpoints-management-config'
 
 dependencies {
-  implementation(project(":endpoints-management-protos"))
-  implementation platform(libraries.protobufJavaBom)
-  implementation "com.google.protobuf:protobuf-java"
+  api(project(":endpoints-management-protos"))
   implementation "com.google.apis:google-api-services-servicemanagement:$servicemanagementVersion"
   compileOnly "com.google.appengine:appengine-api-1.0-sdk:$appengineSdkVersion"
-  implementation "com.google.guava:guava:$guavaVersion"
+  api "com.google.guava:guava:$guavaVersion"
   implementation "com.google.http-client:google-http-client:$httpClientVersion"
   implementation "com.google.protobuf:protobuf-java-util"
 

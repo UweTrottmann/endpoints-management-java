@@ -684,10 +684,10 @@ public class Client {
   /**
    * SchedulerFactory defines a method for creating {@link Scheduler} instances
    */
-  interface SchedulerFactory {
+  public interface SchedulerFactory {
     /**
      * @param ticker obtains time updates from a time source.
-     * @return a {@ link Scheduler}
+     * @return a {@link Scheduler}
      */
     Scheduler create(Ticker ticker);
   }
@@ -695,7 +695,7 @@ public class Client {
   /**
    * Scheduler uses a {@code PriorityQueue} to maintain a series of {@link Runnable}
    */
-  static class Scheduler {
+  public static class Scheduler {
     private PriorityQueue<ScheduledEvent> queue;
     private Ticker ticker;
     private Statistics statistics;

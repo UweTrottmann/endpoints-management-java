@@ -50,26 +50,26 @@ processResources {
 dependencies {
   implementation "com.google.auto.value:auto-value-annotations:${autoValueVersion}"
   annotationProcessor "com.google.auto.value:auto-value:${autoValueVersion}"
-  implementation "com.google.code.findbugs:jsr305:${jsr305Version}"
-  implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+  api "com.google.code.findbugs:jsr305:${jsr305Version}"
   implementation "com.google.flogger:flogger:${floggerVersion}"
   runtimeOnly "com.google.flogger:flogger-system-backend:${floggerVersion}"
-  implementation "com.google.guava:guava:${guavaVersion}"
+  api "com.google.guava:guava:${guavaVersion}"
+  implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
   implementation("com.google.http-client:google-http-client-jackson2:${httpClientVersion}") {
     exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
     exclude group: 'com.google.guava', module: 'guava-jdk5'
   }
-  implementation "javax.servlet:servlet-api:${servletApiVersion}"
-  implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
-  implementation(group: 'com.google.api-client', name: 'google-api-client-appengine', version: "${googleApiClientAppEngineVersion}") {
+  implementation("com.google.api-client:google-api-client:${googleApiClientProtobufVersion}") {
     exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
     exclude group: 'com.google.guava', module: 'guava-jdk5'
   }
-  implementation project(":endpoints-control-api-client")
+  api "javax.servlet:servlet-api:${servletApiVersion}"
+  api project(":endpoints-control-api-client")
   implementation project(":endpoints-service-config")
-  implementation project(":endpoints-management-protos")
+  api project(":endpoints-management-protos")
 
   testImplementation "junit:junit:${junitVersion}"
   testImplementation "com.google.truth:truth:${truthVersion}"
   testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+  testImplementation "com.google.protobuf:protobuf-java-util"
 }

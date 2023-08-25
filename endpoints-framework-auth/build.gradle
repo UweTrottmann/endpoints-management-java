@@ -22,8 +22,10 @@ configureMaven(
 archivesBaseName = "endpoints-framework-auth"
 
 dependencies {
-  compileOnly group: "com.google.endpoints", name: "endpoints-framework", version: "${endpointsFrameworkVersion}"
+  api group: "com.google.endpoints", name: "endpoints-framework", version: "${endpointsFrameworkVersion}"
+  api "javax.servlet:servlet-api:${servletApiVersion}"
   implementation project(":endpoints-auth")
+  implementation project(":endpoints-control")
 
   testImplementation group: "junit", name: "junit", version: "${junitVersion}"
   testImplementation group: "org.mockito", name: "mockito-core", version: "${mockitoVersion}"

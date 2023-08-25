@@ -17,11 +17,17 @@
 allprojects {
   apply plugin: 'eclipse'
   apply plugin: 'jacoco'
-  apply plugin: 'java'
+  apply plugin: 'java-library'
   apply plugin: 'maven'
   apply plugin: 'signing'
 
   group = 'com.google.endpoints'
+
+  java {
+    toolchain {
+      languageVersion = JavaLanguageVersion.of(8)
+    }
+  }
 
   jacocoTestReport {
     reports {
@@ -57,18 +63,6 @@ subprojects {
   repositories {
     mavenLocal()
     mavenCentral()
-  }
-
-  compileJava {
-    // Workaround to actually apply project compatibility
-    sourceCompatibility = project.sourceCompatibility
-    targetCompatibility = project.targetCompatibility
-  }
-
-  compileTestJava {
-    // Workaround to actually apply project compatibility
-    sourceCompatibility = project.sourceCompatibility
-    targetCompatibility = project.targetCompatibility
   }
 
   ext {
