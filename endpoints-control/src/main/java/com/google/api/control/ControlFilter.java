@@ -1,5 +1,6 @@
 /*
  * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2023 Uwe Trottmann
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -370,6 +371,10 @@ public class ControlFilter implements Filter {
       apiKey = findDefaultApiKeyParam(request);
     }
 
+    // The Service Control check API expects IPv6 addresses formatted without brackets ('[' and ']'), so strip them.
+    String ipAddress = request.getRemoteAddr();
+    String strippedIpAddress = ipAddress.replace("[", "").replace("]", "");
+
     return new CheckRequestInfo(new OperationInfo()
         .setApiKey(apiKey)
         .setApiKeyValid(!Strings.isNullOrEmpty(apiKey))
@@ -378,7 +383,7 @@ public class ControlFilter implements Filter {
         .setOperationId(nextOperationId())
         .setOperationName(info.getSelector())
         .setServiceName(serviceName))
-        .setClientIp(request.getRemoteAddr())
+        .setClientIp(strippedIpAddress)
         .setAndroidPackageName(request.getHeader(X_ANDROID_PACKAGE))
         .setAndroidCertificateFingerprint(request.getHeader(X_ANDROID_CERT))
         .setIosBundleId(request.getHeader(X_IOS_BUNDLE_ID));
