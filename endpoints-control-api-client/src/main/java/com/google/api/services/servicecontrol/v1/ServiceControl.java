@@ -44,16 +44,6 @@ import com.google.api.client.util.ObjectParser;
 public class ServiceControl extends com.google.api.client.googleapis.services.AbstractGoogleClient {
   private static final ObjectParser parser = new ProtoObjectParser();
 
-  // Note: Leave this static initializer at the top of the file.
-  static {
-    com.google.api.client.util.Preconditions.checkState(
-        com.google.api.client.googleapis.GoogleUtils.MAJOR_VERSION == 1 &&
-        com.google.api.client.googleapis.GoogleUtils.MINOR_VERSION >= 15,
-        "You are currently running with version %s of google-api-client. " +
-        "You need at least version 1.15 of google-api-client to run version " +
-        "1.22.0-SNAPSHOT of the Google Service Control API library.", com.google.api.client.googleapis.GoogleUtils.VERSION);
-  }
-
   /**
    * The default encoded root URL of the service. This is determined when the library is generated
    * and normally should not be changed.

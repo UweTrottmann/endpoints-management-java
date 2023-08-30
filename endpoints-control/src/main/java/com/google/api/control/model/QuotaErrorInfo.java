@@ -40,14 +40,6 @@ public enum QuotaErrorInfo {
       Code.RESOURCE_EXHAUSTED,
       429,
       "Quota allocation failed."),
-  PROJECT_SUSPENDED(
-      Code.PROJECT_SUSPENDED,
-      HttpServletResponse.SC_FORBIDDEN,
-      "Project suspended."),
-  SERVICE_NOT_ENABLED(
-      Code.SERVICE_NOT_ENABLED,
-      HttpServletResponse.SC_FORBIDDEN,
-      "API {service_name} is not available for the project."),
   BILLING_NOT_ACTIVE(
       Code.BILLING_NOT_ACTIVE,
       HttpServletResponse.SC_FORBIDDEN,
@@ -56,22 +48,6 @@ public enum QuotaErrorInfo {
       Code.PROJECT_DELETED,
       HttpServletResponse.SC_BAD_REQUEST,
       "Client project not valid. Please pass a valid project."),
-  PROJECT_INVALID(
-      Code.PROJECT_INVALID,
-      HttpServletResponse.SC_BAD_REQUEST,
-      "Client project not valid. Please pass a valid project."),
-  IP_ADDRESS_BLOCKED(
-      Code.IP_ADDRESS_BLOCKED,
-      HttpServletResponse.SC_FORBIDDEN,
-      "IP address blocked."),
-  REFERER_BLOCKED(
-      Code.REFERER_BLOCKED,
-      HttpServletResponse.SC_FORBIDDEN,
-      "Referer blocked."),
-  CLIENT_APP_BLOCKED(
-      Code.CLIENT_APP_BLOCKED,
-      HttpServletResponse.SC_FORBIDDEN,
-      "Client app blocked."),
   API_KEY_INVALID(
       Code.API_KEY_INVALID,
       HttpServletResponse.SC_BAD_REQUEST,
@@ -80,22 +56,6 @@ public enum QuotaErrorInfo {
       Code.API_KEY_EXPIRED,
       HttpServletResponse.SC_BAD_REQUEST,
       "API key expired. Please renew the API key."),
-  PROJECT_STATUS_UNAVAILABLE(
-      Code.PROJECT_STATUS_UNAVAILABLE,
-      HttpServletResponse.SC_OK,
-      ""),
-  SERVICE_STATUS_UNAVAILABLE(
-      Code.SERVICE_STATUS_UNAVAILABLE,
-      HttpServletResponse.SC_OK,
-      ""),
-  BILLING_STATUS_UNAVAILABLE(
-      Code.BILLING_STATUS_UNAVAILABLE,
-      HttpServletResponse.SC_OK,
-      ""),
-  QUOTA_SYSTEM_UNAVAILABLE(
-      Code.QUOTA_SYSTEM_UNAVAILABLE,
-      HttpServletResponse.SC_OK,
-      ""),
   UNKNOWN(
       Code.UNRECOGNIZED,
       HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
@@ -169,7 +129,7 @@ public enum QuotaErrorInfo {
    */
   public static QuotaErrorInfo convert(@Nullable AllocateQuotaResponse response) {
     if (response == null) {
-      return SERVICE_STATUS_UNAVAILABLE;
+      return UNKNOWN;
     }
     if (response.getAllocateErrorsCount() == 0) {
       return OK;

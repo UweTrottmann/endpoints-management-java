@@ -1,15 +1,7 @@
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-  dependencies { classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10' }
-}
-
 plugins {
   id("ut-publish")
+  id("com.google.protobuf") version "0.9.4"
 }
-
-apply plugin: 'com.google.protobuf'
 
 version = "1.0.15-SNAPSHOT"
 
@@ -68,10 +60,12 @@ sourceSets {
       srcDir 'build/generated/source/proto/main/java'
     }
     proto {
-      srcDir 'src/auxi/proto'
+      setIncludes([
+              "google/api/servicecontrol/v1/*.proto",
+              "google/api/distribution.proto",
+              "google/api/client.proto",
+              "google/api/launch_stage.proto"
+      ])
     }
   }
 }
-sourceSets.main.proto.setIncludes([
-  'google/api/servicecontrol/v1/*.proto',
-  'google/api/experimental/*.proto'])

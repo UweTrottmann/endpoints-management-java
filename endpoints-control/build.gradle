@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-  dependencies { classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10' }
-}
-
 plugins {
     id("ut-publish")
 }
