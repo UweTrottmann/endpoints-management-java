@@ -14,12 +14,25 @@
  * limitations under the License.
  */
 
-configureMaven(
-  project,
-  'Endpoints API Management - Authentication',
-  'Enables authentication by multiple authentication providers'
-)
-archivesBaseName = 'endpoints-management-auth'
+plugins {
+  id("ut-publish")
+}
+
+version = "1.0.15-SNAPSHOT"
+
+// Set project-specific publishing properties
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifactId = "endpoints-management-auth"
+      from components.java
+      pom {
+        name.set("Endpoints API Management - Authentication")
+        description.set("Enables authentication by multiple authentication providers")
+      }
+    }
+  }
+}
 
 configurations {
   integrationTestCompile.extendsFrom testImplementation

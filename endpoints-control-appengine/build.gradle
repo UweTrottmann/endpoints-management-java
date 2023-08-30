@@ -14,12 +14,25 @@
  * limitations under the License.
  */
 
-configureMaven(
-  project,
-  'Endpoints API Management on GAE',
-  'Provide access control to managed services on Google App Engine'
-)
-archivesBaseName = 'endpoints-management-control-appengine'
+plugins {
+  id("ut-publish")
+}
+
+version = "1.0.15-SNAPSHOT"
+
+// Set project-specific publishing properties
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifactId = "endpoints-management-control-appengine"
+      from components.java
+      pom {
+        name.set("Endpoints API Management on GAE")
+        description.set("Provide access control to managed services on Google App Engine")
+      }
+    }
+  }
+}
 
 dependencies {
   api project(":endpoints-control")

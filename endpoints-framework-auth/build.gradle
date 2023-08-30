@@ -14,12 +14,25 @@
  * limitations under the License.
  */
 
-configureMaven(
-  project,
-  'Endpoints API Management - Framework Auth Integration',
-  'Enables use of endpoints-management-auth with endpoints-framework'
-)
-archivesBaseName = "endpoints-framework-auth"
+plugins {
+  id("ut-publish")
+}
+
+version = "1.0.15-SNAPSHOT"
+
+// Set project-specific publishing properties
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifactId = "endpoints-framework-auth"
+      from components.java
+      pom {
+        name.set("Endpoints API Management - Framework Auth Integration")
+        description.set("Enables use of endpoints-management-auth with endpoints-framework")
+      }
+    }
+  }
+}
 
 dependencies {
   api group: "com.google.endpoints", name: "endpoints-framework", version: "${endpointsFrameworkVersion}"
