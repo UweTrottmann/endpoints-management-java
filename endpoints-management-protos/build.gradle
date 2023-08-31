@@ -3,7 +3,7 @@ plugins {
   id("com.google.protobuf") version "0.9.4"
 }
 
-version = "1.0.15-SNAPSHOT"
+version = "1.0.15"
 
 // Set project-specific publishing properties
 publishing {

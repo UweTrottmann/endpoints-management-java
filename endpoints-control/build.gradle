@@ -18,7 +18,7 @@ plugins {
     id("ut-publish")
 }
 
-version = "1.0.15-SNAPSHOT"
+version = "1.0.15"
 
 // Set project-specific publishing properties
 publishing {
