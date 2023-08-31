@@ -1,5 +1,6 @@
 /*
  * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2023 Uwe Trottmann
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,7 +92,7 @@ public class Client {
       ServiceControl transport, ThreadFactory threads,
       SchedulerFactory schedulers, int statsLogFrequency, @Nullable Ticker ticker) {
     ticker = ticker == null ? Ticker.systemTicker() : ticker;
-    this.checkAggregator = new CheckRequestAggregator(serviceName, checkOptions, null, ticker);
+    this.checkAggregator = new CheckRequestAggregator(serviceName, checkOptions, ticker);
     this.reportAggregator = new ReportRequestAggregator(serviceName, reportOptions, null, ticker);
     this.quotaAggregator = new QuotaRequestAggregator(serviceName, quotaOptions, ticker);
     this.serviceName = serviceName;
@@ -134,6 +135,7 @@ public class Client {
           scheduleFlushes();
         }
       });
+      // Note: this is not supported on App Engine Standard.
       schedulerThread.start();
     } catch (RuntimeException e) {
       log.atInfo().log(BACKGROUND_THREAD_ERROR);
@@ -305,7 +307,6 @@ public class Client {
     this.scheduler = schedulers.create(ticker);
     this.scheduler.setStatistics(statistics);
     log.atInfo().log("scheduling the initial check, report, and quota");
-    flushAndScheduleChecks();
     flushAndScheduleReports();
     flushAndScheduleQuota();
   }
@@ -321,51 +322,6 @@ public class Client {
     quotaAggregator.clear();
     running = false;
     return true;
-  }
-
-  private void flushAndScheduleChecks() {
-    if (resetIfStopped()) {
-      log.atFine().log("did not schedule check flush: client is stopped");
-      return;
-    }
-    int interval = checkAggregator.getFlushIntervalMillis();
-    if (interval < 0) {
-      log.atFine().log("did not schedule check flush: caching is disabled");
-      return; // cache is disabled, so no flushing it
-    }
-
-    if (isRunningSchedulerDirectly()) {
-      log.atFine().log("did not schedule check flush: no scheduler thread is running");
-      return;
-    }
-
-    log.atFine().log("flushing the check aggregator");
-    Stopwatch w = Stopwatch.createUnstarted(ticker);
-    for (CheckRequest req : checkAggregator.flush()) {
-      try {
-        statistics.recachedChecks.incrementAndGet();
-        w.reset().start();
-        CheckResponse resp = transport.services().check(serviceName, req).execute();
-        statistics.totalCheckTransportTimeMillis.addAndGet(w.elapsed(TimeUnit.MILLISECONDS));
-        w.reset().start();
-        checkAggregator.addResponse(req, resp);
-        statistics.totalCheckCacheUpdateTimeMillis.addAndGet(w.elapsed(TimeUnit.MILLISECONDS));
-      } catch (IOException e) {
-        log.atSevere().withCause(e).log("direct send of a check request %s failed", req);
-      }
-    }
-    // copy scheduler into a local variable to avoid data races beween this method and stop()
-    Scheduler currentScheduler = scheduler;
-    if (resetIfStopped()) {
-      log.atFine().log("did not schedule succeeding check flush: client is stopped");
-      return;
-    }
-    currentScheduler.enter(new Runnable() {
-      @Override
-      public void run() {
-        flushAndScheduleChecks(); // Do this again after the interval
-      }
-    }, interval, 0 /* high priority */);
   }
 
   private void flushAndScheduleReports() {
