@@ -37,14 +37,6 @@ publishing {
 dependencies {
   api project(":endpoints-control")
   implementation "com.google.appengine:appengine-api-1.0-sdk:$appengineSdkVersion"
-  implementation "com.google.guava:guava:${guavaVersion}"
-  implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
-  implementation("com.google.http-client:google-http-client:${httpClientVersion}") {
-    exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
-    exclude group: 'com.google.guava', module: 'guava-jdk5'
-  }
-  implementation(group: 'com.google.api-client', name: 'google-api-client-appengine', version: "${googleApiClientAppEngineVersion}") {
-    exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
-    exclude group: 'com.google.guava', module: 'guava-jdk5'
-  }
+  implementation("com.google.http-client:google-http-client:${httpClientVersion}")
+  implementation("com.google.api-client:google-api-client-appengine:${googleApiClientAppEngineVersion}")
 }
