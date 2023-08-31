@@ -60,15 +60,8 @@ dependencies {
   implementation "com.google.flogger:flogger:${floggerVersion}"
   runtimeOnly "com.google.flogger:flogger-system-backend:${floggerVersion}"
   api "com.google.guava:guava:${guavaVersion}"
-  implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
-  implementation("com.google.http-client:google-http-client-jackson2:${httpClientVersion}") {
-    exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
-    exclude group: 'com.google.guava', module: 'guava-jdk5'
-  }
-  implementation("com.google.api-client:google-api-client:${googleApiClientProtobufVersion}") {
-    exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
-    exclude group: 'com.google.guava', module: 'guava-jdk5'
-  }
+  implementation("com.google.http-client:google-http-client-gson:${httpClientVersion}")
+  implementation("com.google.api-client:google-api-client:${googleApiClientProtobufVersion}")
   api "javax.servlet:servlet-api:${servletApiVersion}"
   api project(":endpoints-control-api-client")
   implementation project(":endpoints-service-config")
