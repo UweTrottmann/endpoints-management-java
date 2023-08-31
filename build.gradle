@@ -27,7 +27,7 @@ allprojects {
   apply plugin: 'jacoco'
   apply plugin: 'java-library'
 
-  group = 'com.uwetrottmann'
+  group = 'com.uwetrottmann.endpoints'
 
   java {
     toolchain {
