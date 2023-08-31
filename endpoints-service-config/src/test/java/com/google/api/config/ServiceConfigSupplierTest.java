@@ -16,29 +16,28 @@
 
 package com.google.api.config;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import com.google.api.Service;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.LowLevelHttpRequest;
 import com.google.api.client.http.LowLevelHttpResponse;
 import com.google.api.client.json.Json;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.testing.http.MockHttpTransport;
 import com.google.api.client.testing.http.MockLowLevelHttpRequest;
 import com.google.api.client.testing.http.MockLowLevelHttpResponse;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.LinkedList;
+
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link ServiceConfigSupplier}.
@@ -57,7 +56,7 @@ public final class ServiceConfigSupplierTest {
   private final GoogleCredential mockCredential = mock(GoogleCredential.class);
   private final TestingHttpTransport testHttpTransport = new TestingHttpTransport();
   private final ServiceConfigSupplier fetcher = new ServiceConfigSupplier(
-      mockEnvironment, testHttpTransport, new JacksonFactory(), mockCredential);
+      mockEnvironment, testHttpTransport, new GsonFactory(), mockCredential);
 
   @Before
   public void setUp() {

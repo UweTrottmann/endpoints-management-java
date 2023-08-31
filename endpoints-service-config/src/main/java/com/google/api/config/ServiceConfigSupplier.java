@@ -26,7 +26,7 @@ import com.google.api.client.http.HttpStatusCodes;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.servicemanagement.ServiceManagement;
 import com.google.api.services.servicemanagement.model.ListServiceConfigsResponse;
 import com.google.common.annotations.VisibleForTesting;
@@ -38,11 +38,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.protobuf.util.JsonFormat;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 /**
  * Supplies a service configuration fetched from Google Service Management APIs.
@@ -222,7 +221,7 @@ public final class ServiceConfigSupplier implements Supplier<Service> {
    */
   public static ServiceConfigSupplier create() {
     NetHttpTransport httpTransport = new NetHttpTransport();
-    JacksonFactory jsonFactory = new JacksonFactory();
+    GsonFactory jsonFactory = new GsonFactory();
     GoogleCredential credential;
     try {
       credential = GoogleCredential.getApplicationDefault(httpTransport, jsonFactory)
