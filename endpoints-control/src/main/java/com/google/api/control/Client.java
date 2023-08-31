@@ -23,7 +23,7 @@ import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.control.aggregator.CheckAggregationOptions;
 import com.google.api.control.aggregator.CheckRequestAggregator;
 import com.google.api.control.aggregator.QuotaAggregationOptions;
@@ -44,6 +44,8 @@ import com.google.common.base.Ticker;
 import com.google.common.collect.Queues;
 import com.google.common.flogger.FluentLogger;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
@@ -51,7 +53,6 @@ import java.util.PriorityQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-import javax.annotation.Nullable;
 
 /**
  * Client is a package-level facade that encapsulates all service control functionality.
@@ -480,7 +481,7 @@ public class Client {
       if (h == null) {
         h = GoogleNetHttpTransport.newTrustedTransport();
       }
-      GoogleCredential c = GoogleCredential.getApplicationDefault(transport, new JacksonFactory());
+      GoogleCredential c = GoogleCredential.getApplicationDefault(transport, new GsonFactory());
       if (c.createScopedRequired()) {
         c = c.createScoped(ServiceControlScopes.all());
       }

@@ -35,12 +35,8 @@ publishing {
 }
 
 dependencies {
-  implementation("com.google.api-client:google-api-client-protobuf:${googleApiClientProtobufVersion}") {
-    exclude group: 'com.google.guava', module: 'guava-jdk5'
-  }
-  implementation("com.google.api-client:google-api-client:${googleApiClientProtobufVersion}") {
-    exclude group: 'com.google.guava', module: 'guava-jdk5'
-  }
+  implementation("com.google.api-client:google-api-client-protobuf:${googleApiClientProtobufVersion}")
+  implementation("com.google.api-client:google-api-client:${googleApiClientProtobufVersion}")
   api("com.google.http-client:google-http-client:$httpClientVersion")
   api project(":endpoints-management-protos")
 }

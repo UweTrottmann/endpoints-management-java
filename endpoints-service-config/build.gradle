@@ -39,7 +39,7 @@ dependencies {
   implementation "com.google.apis:google-api-services-servicemanagement:$servicemanagementVersion"
   compileOnly "com.google.appengine:appengine-api-1.0-sdk:$appengineSdkVersion"
   api "com.google.guava:guava:$guavaVersion"
-  implementation "com.google.http-client:google-http-client:$httpClientVersion"
+  implementation "com.google.http-client:google-http-client-gson:$httpClientVersion"
   implementation "com.google.protobuf:protobuf-java-util"
 
   testImplementation "org.mockito:mockito-core:$mockitoVersion"
