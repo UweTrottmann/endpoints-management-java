@@ -1,5 +1,6 @@
 plugins {
-  id("ut-publish")
+  id("endpoints-management-java.java-conventions")
+  id("endpoints-management-java.publish-conventions")
   id("com.google.protobuf") version "0.9.4"
 }
 

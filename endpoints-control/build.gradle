@@ -15,7 +15,9 @@
  */
 
 plugins {
-    id("ut-publish")
+  id("endpoints-management-java.java-conventions")
+  id("endpoints-management-java.checkstyle-conventions")
+  id("endpoints-management-java.publish-conventions")
 }
 
 version = "1.0.15"

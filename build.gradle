@@ -21,58 +21,7 @@ plugins {
   id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
 }
 
-
-allprojects {
-  apply plugin: 'eclipse'
-  apply plugin: 'jacoco'
-  apply plugin: 'java-library'
-
-  group = 'com.uwetrottmann.endpoints'
-
-  java {
-    toolchain {
-      languageVersion = JavaLanguageVersion.of(8)
-    }
-    withJavadocJar()
-    withSourcesJar()
-  }
-
-  jacocoTestReport {
-    reports {
-      xml.enabled true
-    }
-  }
-
-  // force checkstyle tasks to fail on warnings, but don't run checkstyle on
-  // code generated projects
-  if (name != 'endpoints-management-protos') {
-    apply plugin: 'checkstyle'
-
-    checkstyle {
-      configFile = rootProject.file("config/checkstyle/checkstyle.xml")
-      toolVersion = "6.19"
-    }
-
-    tasks.withType(Checkstyle).each { checkstyleTask ->
-      checkstyleTask.doLast {
-        reports.all { report ->
-          def outputFile = report.destination
-          if (outputFile.exists() && outputFile.text.contains("<error ")) {
-            outputs.upToDateWhen { false }
-            throw new GradleException("There were checkstyle warnings! For more info check $outputFile")
-          }
-        }
-      }
-    }
-  }
-}
-
 subprojects {
-  repositories {
-    mavenLocal()
-    mavenCentral()
-  }
-
   ext {
     libraries = [
       grpcBom: "io.grpc:grpc-bom:${grpcVersion}",
