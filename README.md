@@ -47,7 +47,7 @@ This library follows [Semantic Versioning](http://semver.org/).
 Repository Structure
 --------------------
 
-This repository provides several artifacts, all in the `com.google.endpoints` group:
+This repository provides several artifacts, all in the `com.uwetrottmann.endpoints` group:
 
 1.  `endpoints-management-auth`: Enables authentication by multiple authentication providers
 2.  `endpoints-control-api-client`: A basic client library for accessing the service control API
