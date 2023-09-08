@@ -5,12 +5,7 @@ plugins {
     id("signing")
 }
 
-// Make javadoc task errors not break the build.
-if (JavaVersion.current().isJava8Compatible) {
-    tasks.withType<Javadoc> {
-        isFailOnError = false
-    }
-}
+group = "com.uwetrottmann.endpoints"
 
 publishing {
     // Note: Sonatype repo created by publish-plugin, see root build.gradle.
