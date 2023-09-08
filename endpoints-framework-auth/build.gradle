@@ -20,7 +20,7 @@ plugins {
   id("endpoints-management-java.publish-conventions")
 }
 
-version = "1.0.15"
+version = "1.0.16"
 
 // Set project-specific publishing properties
 publishing {
