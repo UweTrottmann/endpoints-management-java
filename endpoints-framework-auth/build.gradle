@@ -37,7 +37,7 @@ publishing {
 }
 
 dependencies {
-  api group: "com.google.endpoints", name: "endpoints-framework", version: "${endpointsFrameworkVersion}"
+  api group: "com.uwetrottmann.endpoints", name: "endpoints-framework", version: "${endpointsFrameworkVersion}"
   api "javax.servlet:servlet-api:${servletApiVersion}"
   implementation project(":endpoints-auth")
   implementation project(":endpoints-control")
@@ -45,7 +45,6 @@ dependencies {
   testImplementation group: "junit", name: "junit", version: "${junitVersion}"
   testImplementation group: "org.mockito", name: "mockito-core", version: "${mockitoVersion}"
   testImplementation group: "org.springframework", name: "spring-test", version: "${springTestVersion}"
-  testImplementation group: "com.google.endpoints", name: "endpoints-framework", version: "${endpointsFrameworkVersion}"
   implementation "com.google.flogger:flogger:${floggerVersion}"
   runtimeOnly "com.google.flogger:flogger-system-backend:${floggerVersion}"
 }
